@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/main.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel ="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+  <title>Computer Builder</title>
+</head>
+<body>
+  <div id="app">
+    <h2 class="text-center bg-secondary text-white p-4">Build Your Own PC <i class="fa-solid fa-computer"></i></h2>
+    <!-- <pre>{{ storage }}</pre> -->
+    <div class="container-fluid py-2">
+      <form v-on:submit.prevent="addPC()" class="was-validated" novalidate>
+        <div id="cpu-select" class="m-3">
+          <h4 class="mb-4">step1: Select your CPU</h4>
+          <div class="row">
+            <select-attribute
+              attribute="Brand"
+              v-bind:options="cpu"
+              v-model="selectedPC.cpu.brand"
+            >
+            </select-attribute>
+            <select-attribute
+              attribute="Model"
+              v-bind:options="cpu[selectedPC.cpu.brand]"
+              v-model="selectedPC.cpu.model"
+            >
+            </select-attribute>
+          </div>
+        </div>
+
+        <div id="gpu-select" class="m-3">
+          <h4 class="mb-4">step2: Select your GPU</h4>
+          <div class="row">
+            <select-attribute
+              attribute="Brand"
+              v-bind:options="gpu"
+              v-model="selectedPC.gpu.brand"
+            >
+            </select-attribute>
+            <select-attribute
+              attribute="Model"
+              v-bind:options="gpu[selectedPC.gpu.brand]"
+              v-model="selectedPC.gpu.model"
+            >
+            </select-attribute>
+          </div>
+        </div>
+
+        <div id="memory-select" class="m-3">
+          <h4 class="mb-4">step3: Select your memory card</h4>
+          <div class="mb-3 row">
+            <select-attribute
+              attribute="How many?"
+              v-bind:options="ram"
+              v-model="selectedPC.ram.slot"
+            >
+            </select-attribute>
+            <select-attribute
+              attribute="Brand"
+              v-bind:options="ram[selectedPC.ram.slot]"
+              v-model="selectedPC.ram.brand"
+            >
+            </select-attribute>
+              <select-attribute
+                attribute="Model"
+                v-bind:options="selectedPC.ram.brand ? ram[selectedPC.ram.slot][selectedPC.ram.brand] : ''"
+                v-model="selectedPC.ram.model"
+              >
+              </select-attribute>
+          </div>
+        </div>
+
+        <div id="Storage-select" class="m-3">
+          <h4 class="mb-4">step4: Select your memory storage</h4>
+          <div class="mb-3 row">
+            <select-attribute
+              attribute="HDD or SSD"
+              v-bind:options="storage"
+              v-model="selectedPC.storage.type"
+            >
+            </select-attribute>
+            <select-attribute
+              attribute="Size"
+              v-bind:options="storage[selectedPC.storage.type]"
+              v-model="selectedPC.storage.size"
+            >
+            </select-attribute>
+            <select-attribute
+              attribute="Brand"
+              v-bind:options="selectedPC.storage.size ? storage[selectedPC.storage.type][selectedPC.storage.size] : ''"
+              v-model="selectedPC.storage.brand"
+            >
+            </select-attribute>
+            <select-attribute
+              attribute="Model"
+              v-bind:options="selectedPC.storage.brand ? storage[selectedPC.storage.type][selectedPC.storage.size][selectedPC.storage.brand] : ''"
+              v-model="selectedPC.storage.model"
+            >
+            </select-attribute>
+          </div>
+        </div>
+
+        <div class="mx-3 my-5">
+          <button type="submit" class="btn btn-primary px-5">Add PC</button>
+        </div>
+      </form>
+
+      <div class="d-flex flex-wrap justify-content-center m-3">
+        <pc-card
+          v-for="(selectedPC, index) in selectedPCs"
+          v-bind:key="selectedPC.id"
+          v-bind:index="index+1"
+          v-bind:selected-p-c="selectedPC"
+        ></pc-card>
+      </div>
+    </div>
+  </div>
+  <script src="https://unpkg.com/vue@3.1.5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <script src="main.js"></script>
+</body>
+</html>
